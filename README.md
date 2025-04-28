@@ -1,12 +1,113 @@
 
-# GPT-2 Text Generation Web App
+# Text Generation with GPT-2 (Colab & Web App)
 
-This is a simple web application built with **FastAPI** to generate text using a fine-tuned **GPT-2** model.  
-It uses an adapter-based fine-tuning (via PEFT - Parameter-Efficient Fine-Tuning) and serves a user-friendly frontend to interact with the model.
+This project demonstrates fine-tuning GPT-2 using a custom dataset and integrates both a Google Colab notebook for training and a FastAPI web app for serving the fine-tuned model to generate text from a given prompt.
+
+# 📖 Project Overview
+
+This project uses GPT-2, a transformer-based language model developed by OpenAI, and fine-tunes it on a custom dataset. The goal is to generate coherent and contextually relevant text based on any given prompt. The model is fine-tuned with LoRA (Low-Rank Adaptation) to use fewer parameters while retaining high performance.
+
+# Key Features
+
+- Fine-tune GPT-2 on a custom dataset.
+- Use LoRA for lightweight fine-tuning.
+- Supports dataset upload, preprocessing, and tokenization.
+- Fine-tune with TensorBoard monitoring.
+- Text Generation based on a user-provided prompt.
+- Save the model in Hugging Face and PyTorch formats.
+- Option to download the model as a ZIP file or upload to Google Drive.
+
+# 🛠️ Tech Stack
+
+- Python 3
+
+- Hugging Face Transformers (transformers)
+
+- PEFT (Parameter-Efficient Fine-Tuning) (peft)
+
+- PyTorch (torch)
+
+- TensorBoard (for training monitoring)
+  
+- Google Colab (for training)
+
+- FastAPI (for the web app)
+
+- Jinja2 Templates (for frontend)
+
+- CSS (for styling the web app)
+
+# 🚀 How to Run
+
+## 1. Google Colab Notebook for Training GPT-2
+
+You can train the GPT-2 model directly on Google Colab by following these steps:
+
+### Install Dependencies
+```bash
+pip install -qU transformers==4.37.0 datasets==2.15.0 peft==0.6.0 accelerate==0.25.0
+pip install -qU torch==2.1.0 tensorboard==2.15.0
+```
+
+### b. Upload and Preprocess Dataset
+- Upload your data.txt file (where each line is a sample text).
+
+- Convert it to Arrow format for optimized loading.
+  
+### c. Tokenize the Data
+Use GPT-2's tokenizer to process your dataset with a max sequence length of 256 tokens.
+
+### d. Train the Model
+- Load the GPT-2 model and apply LoRA for fine-tuning.
+
+- Monitor the training with TensorBoard.
+
+### e. Save and Export the Model
+
+- Save the fine-tuned model in Hugging Face format (gpt2-finetuned/) and PyTorch format (gpt2_weights.pt).
+
+- Optionally, upload the model to Google Drive.
+
+### f. Text Generation
+```bash
+print(generate_text("In a future where AI dominates"))
+```
+## 2. FastAPI Web App for Text Generation
+
+After training the model, you can serve it through a FastAPI web app.
+
+### a. Clone the repository:
+```bash
+git clone <repo-url>
+cd gpt2-webapp
+```
+### b. Create a virtual environment:
+```bash
+python -m venv venv
+```
+### c. Activate the environment:
+```bash
+On Windows
+venv\Scripts\activate
+On mac
+source venv/bin/activate
+```
+### d. Install Dependencies:
+```bash
+pip install -r requirements.txt
+```
+### e. Run the App:
+```bash
+uvicorn app.main:app --reload
+```
+### f. Visit the Web App:
+```bash
+Open your browser and go to: http://localhost:8000
+```
 
 ---
 
-## 📁 Project Structure
+## 📁 Application Structure
 
 ```
 gpt2-webapp/
@@ -33,65 +134,6 @@ gpt2-webapp/
 ├── requirements.txt     # Python dependencies
 └── README.md             # Project documentation
 ```
-
----
-
-## 🚀 Application Details
-
-### Backend
-- **FastAPI** serves both the API endpoints and the HTML frontend.
-- **TextGenerator** class handles model loading and text generation using `transformers` and `peft`.
-- Model loading includes:
-  - **Base Model**: `gpt2`
-  - **Fine-tuned Adapter**: Loaded from `gpt2-finetuned/` directory.
-- Uses **GPU** (CUDA) if available, otherwise **CPU**.
-
-### Frontend
-- **HTML (Jinja2 Templates)** and **CSS** to create a simple and elegant UI.
-- Users can input a **prompt** and adjust:
-  - `max_length`
-  - `temperature`
-  - `top_k`
-  - `top_p`
-- Displays the **generated text** and **processing time** after submission.
-
----
-
-## 🛠️ Installation & Running Locally
-
-1. **Clone the repository:**
-   ```bash
-   git clone <repo-url>
-   cd gpt2-webapp
-   ```
-
-2. **Create a virtual environment:**
-   ```bash
-   python -m venv venv
-   ```
-
-3. **Activate the environment:**
-   - On Windows:
-     ```bash
-     venv\Scripts\activate
-     ```
-   - On Mac/Linux:
-     ```bash
-     source venv/bin/activate
-     ```
-
-4. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-5. **Run the app:**
-   ```bash
-   uvicorn app.main:app --reload
-   ```
-
-6. **Visit**:
-   Open your browser and go to: [http://localhost:8000](http://localhost:8000)
 
 ---
 
